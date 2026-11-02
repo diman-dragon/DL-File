@@ -31,7 +31,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -87,7 +86,7 @@ fun PrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifi
             contentColor = if (danger) Color.White else fd.onManila,
             disabledContainerColor = fd.surface3, disabledContentColor = fd.muted,
         ),
-    ) { Text(text, fontWeight = FontWeight.SemiBold) }
+    ) { FdText(text, fontWeight = FontWeight.SemiBold) }
 }
 
 @Composable
@@ -96,7 +95,7 @@ fun GhostButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier
         onClick = onClick, enabled = enabled, modifier = modifier.heightIn(min = 50.dp),
         shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, fd.line),
         colors = ButtonDefaults.outlinedButtonColors(contentColor = fd.text, disabledContentColor = fd.muted),
-    ) { Text(text) }
+    ) { FdText(text) }
 }
 
 @Composable
@@ -107,10 +106,10 @@ fun StateView(icon: ImageVector, title: String, text: String? = null, action: (@
     ) {
         Icon(icon, null, tint = fd.muted, modifier = Modifier.size(48.dp))
         Spacer(Modifier.height(12.dp))
-        Text(title, color = fd.text, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+        FdText(title, color = fd.text, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
         if (text != null) {
             Spacer(Modifier.height(6.dp))
-            Text(text, color = fd.muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+            FdText(text, color = fd.muted, fontSize = 14.sp, textAlign = TextAlign.Center)
         }
         if (action != null) {
             Spacer(Modifier.height(16.dp))
@@ -128,7 +127,7 @@ fun Spinner(modifier: Modifier = Modifier) {
 
 @Composable
 fun SectionTitle(text: String) {
-    Text(
+    FdText(
         text, color = fd.muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
         modifier = Modifier.padding(start = 20.dp, top = 18.dp, bottom = 8.dp),
     )
@@ -144,8 +143,8 @@ fun Group(content: @Composable () -> Unit) {
 @Composable
 internal fun RowText(label: String, hint: String?, modifier: Modifier, danger: Boolean = false) {
     Column(modifier) {
-        Text(label, color = if (danger) fd.danger else fd.text, fontSize = 16.sp)
-        if (!hint.isNullOrEmpty()) Text(hint, color = fd.muted, fontSize = 13.sp)
+        FdText(label, color = if (danger) fd.danger else fd.text, fontSize = 16.sp)
+        if (!hint.isNullOrEmpty()) FdText(hint, color = fd.muted, fontSize = 13.sp)
     }
 }
 
@@ -214,7 +213,7 @@ fun KindBadge(kind: FileKind, size: Int = 44) {
 
 @Composable
 fun Pill(label: String, current: Boolean, onClick: () -> Unit) {
-    Text(
+    FdText(
         label, color = if (current) fd.onManila else fd.text, fontSize = 14.sp, maxLines = 1,
         modifier = Modifier.padding(end = 6.dp).clip(RoundedCornerShape(14.dp))
             .background(if (current) fd.manila else fd.surface3)
@@ -264,6 +263,6 @@ fun ItemRow(
 @Composable
 fun SelectAllButton(all: Boolean, onClick: () -> Unit) {
     TextButton(onClick = onClick) {
-        Text(Str.s(if (all) R.string.s_snyat_vse else R.string.s_vybrat_vse), color = fd.manila)
+        FdText(Str.s(if (all) R.string.s_snyat_vse else R.string.s_vybrat_vse), color = fd.manila)
     }
 }

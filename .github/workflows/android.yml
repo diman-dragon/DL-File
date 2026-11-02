@@ -43,14 +43,14 @@ jobs:
         run: |
           VERSION=$(grep '^app.version=' gradle.properties | cut -d= -f2)
           mkdir -p release
-          cp app/build/outputs/apk/debug/app-debug.apk "release/filedeck-${VERSION}-debug.apk"
-          cp app/build/outputs/apk/release/app-release.apk "release/filedeck-${VERSION}.apk"
-          cp app/build/outputs/bundle/release/app-release.aab "release/filedeck-${VERSION}.aab"
+          cp app/build/outputs/apk/debug/app-debug.apk "release/dl-file-${VERSION}-debug.apk"
+          cp app/build/outputs/apk/release/app-release.apk "release/dl-file-${VERSION}.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "release/dl-file-${VERSION}.aab"
           ls -la release
 
       - uses: actions/upload-artifact@v4
         with:
-          name: filedeck-${{ github.sha }}
+          name: dl-file-${{ github.sha }}
           path: release/*
 
       - name: Релиз на GitHub (по тегу v*)

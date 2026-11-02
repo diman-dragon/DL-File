@@ -6,7 +6,6 @@ import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.filedeck.app.FileKind
 
@@ -52,6 +51,10 @@ object Icons2 {
     val chevron = Icons.Outlined.ChevronRight
     val lock = Icons.Outlined.Lock
     val refresh = Icons.Outlined.Refresh
+    val sort = Icons.Outlined.SwapVert
+    val tag = Icons.Outlined.LocalOffer
+    val play = Icons.Outlined.PlayArrow
+    val pause = Icons.Outlined.Pause
 }
 
 fun kindIcon(kind: FileKind): ImageVector = when (kind) {

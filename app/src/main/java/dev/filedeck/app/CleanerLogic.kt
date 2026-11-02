@@ -112,7 +112,9 @@ object CleanerLogic {
         for (c in CleanCat.entries) {
             val rows = rowsOf(r, c)
             val set = LinkedHashSet<String>()
-            if (c.group) {
+            if (c == CleanCat.Similar) {
+                // Похожие фото — только вручную: сходство приблизительное.
+            } else if (c.group) {
                 for (list in groupRows(rows).values) {
                     val keep = keeper(list)
                     for (row in list) if (row !== keep) set.add(row.path)

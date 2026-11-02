@@ -25,7 +25,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -62,7 +61,7 @@ private fun DialogShell(
         containerColor = fd.surface2,
         titleContentColor = fd.text,
         textContentColor = fd.muted,
-        title = { Text(title, fontWeight = FontWeight.SemiBold) },
+        title = { FdText(title, fontWeight = FontWeight.SemiBold) },
         text = { Column(Modifier.verticalScroll(rememberScrollState())) { body() } },
         confirmButton = confirm,
         dismissButton = dismiss,
@@ -75,11 +74,11 @@ fun ConfirmDialogUi(d: Dlg.Confirm) {
         d.title, onDismiss = { d.result.complete(false) },
         confirm = {
             TextButton(onClick = { d.result.complete(true) }) {
-                Text(d.okText, color = if (d.danger) fd.danger else fd.manila, fontWeight = FontWeight.SemiBold)
+                FdText(d.okText, color = if (d.danger) fd.danger else fd.manila, fontWeight = FontWeight.SemiBold)
             }
         },
-        dismiss = { TextButton(onClick = { d.result.complete(false) }) { Text(Str.s(R.string.s_otmena), color = fd.muted) } },
-    ) { Text(d.text) }
+        dismiss = { TextButton(onClick = { d.result.complete(false) }) { FdText(Str.s(R.string.s_otmena), color = fd.muted) } },
+    ) { FdText(d.text) }
 }
 
 @Composable
@@ -98,17 +97,17 @@ fun PromptDialogUi(d: Dlg.Prompt) {
     }
     DialogShell(
         d.title, onDismiss = { d.result.complete(null) },
-        confirm = { TextButton(onClick = { d.result.complete(tf.text) }) { Text(d.okText, color = fd.manila,
+        confirm = { TextButton(onClick = { d.result.complete(tf.text) }) { FdText(d.okText, color = fd.manila,
             fontWeight = FontWeight.SemiBold) } },
-        dismiss = { TextButton(onClick = { d.result.complete(null) }) { Text(Str.s(R.string.s_otmena), color = fd.muted) } },
+        dismiss = { TextButton(onClick = { d.result.complete(null) }) { FdText(Str.s(R.string.s_otmena), color = fd.muted) } },
     ) {
         if (d.text != null) {
-            Text(d.text)
+            FdText(d.text)
             Spacer(Modifier.height(8.dp))
         }
         OutlinedTextField(
             value = tf, onValueChange = { tf = it }, singleLine = true,
-            placeholder = { Text(d.placeholder) },
+            placeholder = { FdText(d.placeholder) },
             visualTransformation = if (d.password && !show) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = if (d.password) KeyboardType.Password else KeyboardType.Text),
             trailingIcon = if (d.password) {
@@ -118,7 +117,7 @@ fun PromptDialogUi(d: Dlg.Prompt) {
             isError = d.error.isNotEmpty(),
             modifier = Modifier.fillMaxWidth().focusRequester(focus),
         )
-        if (d.error.isNotEmpty()) Text(d.error, color = fd.danger, fontSize = 13.sp, modifier = Modifier.padding(top = 4.dp))
+        if (d.error.isNotEmpty()) FdText(d.error, color = fd.danger, fontSize = 13.sp, modifier = Modifier.padding(top = 4.dp))
     }
 }
 
@@ -126,12 +125,12 @@ fun PromptDialogUi(d: Dlg.Prompt) {
 fun InfoDialogUi(st: InfoState, onClose: () -> Unit) {
     DialogShell(
         st.title, onDismiss = onClose,
-        confirm = { TextButton(onClick = onClose) { Text(Str.s(R.string.action_close), color = fd.manila) } },
+        confirm = { TextButton(onClick = onClose) { FdText(Str.s(R.string.action_close), color = fd.manila) } },
     ) {
         st.rows.forEach { (k, v) ->
             Column(Modifier.padding(vertical = 5.dp)) {
-                Text(k, color = fd.muted, fontSize = 12.sp)
-                Text(v, color = fd.text, fontSize = 15.sp)
+                FdText(k, color = fd.muted, fontSize = 12.sp)
+                FdText(v, color = fd.text, fontSize = 15.sp)
             }
         }
     }
@@ -142,7 +141,7 @@ fun ProgressDialogUi(p: ProgressState) {
     AlertDialog(
         onDismissRequest = { p.cancel?.invoke() },
         containerColor = fd.surface2,
-        title = { Text(p.title, color = fd.text, fontWeight = FontWeight.SemiBold) },
+        title = { FdText(p.title, color = fd.text, fontWeight = FontWeight.SemiBold) },
         text = {
             Column {
                 if (p.fraction != null) {
@@ -158,7 +157,7 @@ fun ProgressDialogUi(p: ProgressState) {
         },
         confirmButton = {},
         dismissButton = if (p.cancel != null) {
-            { TextButton(onClick = { p.cancel.invoke() }) { Text(Str.s(R.string.s_otmena), color = fd.muted) } }
+            { TextButton(onClick = { p.cancel.invoke() }) { FdText(Str.s(R.string.s_otmena), color = fd.muted) } }
         } else null,
     )
 }
@@ -220,34 +219,34 @@ fun CreateArchiveDialogUi(d: Dlg.CreateArchive) {
                 if (n.isEmpty()) err = Str.s(R.string.s_vvedite_imya_arhiva)
                 else if (n.contains("/")) err = Str.s(R.string.s_v_imeni_nelzya_ispolzovat)
                 else d.result.complete(ArchiveOptions(n, format, level, if (zip) pw else ""))
-            }) { Text(Str.s(R.string.s_sozdat), color = fd.manila, fontWeight = FontWeight.SemiBold) }
+            }) { FdText(Str.s(R.string.s_sozdat), color = fd.manila, fontWeight = FontWeight.SemiBold) }
         },
-        dismiss = { TextButton(onClick = { d.result.complete(null) }) { Text(Str.s(R.string.s_otmena), color = fd.muted) } },
+        dismiss = { TextButton(onClick = { d.result.complete(null) }) { FdText(Str.s(R.string.s_otmena), color = fd.muted) } },
     ) {
-        Text(if (d.count == 1) Str.s(R.string.s_odin_obekt) else Str.f(R.string.s_obektov, d.count))
+        FdText(if (d.count == 1) Str.s(R.string.s_odin_obekt) else Str.f(R.string.s_obektov, d.count))
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(value = name, onValueChange = { name = it; err = "" }, singleLine = true,
-            label = { Text(Str.s(R.string.s_imya)) }, isError = err.isNotEmpty(), modifier = Modifier.fillMaxWidth())
-        if (err.isNotEmpty()) Text(err, color = fd.danger, fontSize = 13.sp)
+            label = { FdText(Str.s(R.string.s_imya)) }, isError = err.isNotEmpty(), modifier = Modifier.fillMaxWidth())
+        if (err.isNotEmpty()) FdText(err, color = fd.danger, fontSize = 13.sp)
         Spacer(Modifier.height(10.dp))
-        Text(Str.s(R.string.s_format), fontSize = 13.sp)
+        FdText(Str.s(R.string.s_format), fontSize = 13.sp)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ARCHIVE_FORMATS.forEach { (v, l, _) ->
-                FilterChip(selected = format == v, onClick = { format = v; if (v != "zip") pw = "" }, label = { Text(l) })
+                FilterChip(selected = format == v, onClick = { format = v; if (v != "zip") pw = "" }, label = { FdText(l) })
             }
         }
-        Text(ARCHIVE_FORMATS.first { it.first == format }.third, fontSize = 13.sp)
+        FdText(ARCHIVE_FORMATS.first { it.first == format }.third, fontSize = 13.sp)
         Spacer(Modifier.height(10.dp))
-        Text(Str.s(R.string.s_szhatie), fontSize = 13.sp)
+        FdText(Str.s(R.string.s_szhatie), fontSize = 13.sp)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ARCHIVE_LEVELS.forEach { (v, l) ->
-                FilterChip(selected = level == v, onClick = { level = v }, label = { Text(l) })
+                FilterChip(selected = level == v, onClick = { level = v }, label = { FdText(l) })
             }
         }
         Spacer(Modifier.height(10.dp))
         OutlinedTextField(
             value = pw, onValueChange = { pw = it }, singleLine = true, enabled = zip,
-            label = { Text(if (zip) Str.s(R.string.s_parol_neobyazatelno) else Str.s(R.string.s_parol_est_tolko_u_zip)) },
+            label = { FdText(if (zip) Str.s(R.string.s_parol_neobyazatelno) else Str.s(R.string.s_parol_est_tolko_u_zip)) },
             visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = { IconButton(onClick = { show = !show }) { Icon(if (show) Icons2.eyeOff else Icons2.eye,
                 Str.s(R.string.s_pokazat_parol), tint = fd.muted) } },

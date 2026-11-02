@@ -140,7 +140,8 @@ object Fs {
         }
         val src = File(path)
         val dst = File(src.parentFile, clean)
-        if (dst.exists()) throw IOException(Str.s(R.string.error_name_taken))
+        val sameFile = dst.exists() && src.canonicalFile == dst.canonicalFile
+        if (dst.exists() && !sameFile) throw IOException(Str.s(R.string.error_name_taken))
         if (!src.renameTo(dst)) throw IOException(Str.s(R.string.error_rename))
         return dst.absolutePath
     }

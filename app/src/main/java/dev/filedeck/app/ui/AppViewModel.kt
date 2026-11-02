@@ -50,7 +50,10 @@ sealed interface Overlay {
     class Cleaner(val c: CleanerController) : Overlay
     class Trash(val c: TrashController) : Overlay
     class ArchiveView(val c: ArchiveBrowserController) : Overlay
-    class Image(val images: List<FileEntry>, val start: Int) : Overlay
+    class Media(initial: List<FileEntry>, val start: Int) : Overlay {
+        var items by mutableStateOf(initial)
+    }
+    class Tags(val c: TagsController) : Overlay
     class Editor(val c: EditorController) : Overlay
 }
 
@@ -112,11 +115,17 @@ class AppViewModel(private val app: Application) : AndroidViewModel(app), UiHost
     val visibleEntries: List<FileEntry> by derivedStateOf {
         val s = search
         if (s != null) {
-            s.results
+            sortEntries(s.results, settings.sortBy, settings.desc)
         } else {
             val shown = if (settings.hidden) entries else entries.filter { !it.name.startsWith(".") }
             sortEntries(shown, settings.sortBy, settings.desc)
         }
+    }
+
+    val sortSpec: SortSpec get() = SortSpec(settings.sortBy, settings.desc)
+
+    fun setSort(spec: SortSpec) {
+        updateSettings { it.copy(sortBy = spec.by, desc = spec.desc) }
     }
 
     fun primaryRoot(): StorageRoot? = roots.firstOrNull { it.primary } ?: roots.firstOrNull()
@@ -356,9 +365,9 @@ class AppViewModel(private val app: Application) : AndroidViewModel(app), UiHost
             return
         }
         val kind = e.kind()
-        if (kind == FileKind.Image) {
-            val images = visibleEntries.filter { it.kind() == FileKind.Image }
-            overlays.add(Overlay.Image(images, maxOf(0, images.indexOfFirst { it.path == e.path })))
+        if (kind == FileKind.Image || kind == FileKind.Video) {
+            val media = visibleEntries.filter { !it.dir && (it.kind() == FileKind.Image || it.kind() == FileKind.Video) }
+            overlays.add(Overlay.Media(media, maxOf(0, media.indexOfFirst { it.path == e.path })))
             return
         }
         if (isArchive(e.name)) {
@@ -377,6 +386,19 @@ class AppViewModel(private val app: Application) : AndroidViewModel(app), UiHost
             return
         }
         openExternal(e)
+    }
+
+    /** Файл переименован или изменён: обновляем списки, просмотрщик и поиск. */
+    fun onFileChanged(old: String, new: String) {
+        val fresh = try { Fs.describe(java.io.File(new), false) } catch (e: Exception) { null }
+        if (fresh != null) {
+            overlays.filterIsInstance<Overlay.Media>().forEach { m ->
+                m.items = m.items.map { if (it.path == old) fresh else it }
+            }
+            search = search?.let { s -> s.copy(results = s.results.map { if (it.path == old) fresh else it }) }
+        }
+        selection = emptySet()
+        refresh()
     }
 
     fun openEditor(e: FileEntry) {

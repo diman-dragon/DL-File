@@ -235,11 +235,12 @@ class TrashService(private val rootsProvider: () -> List<File>) {
 
     /** Автоочистка: удаляет всё, что лежит в корзине дольше days дней. */
     suspend fun purge(days: Int): TrashDeleteResult = withContext(Dispatchers.IO) {
+        if (days <= 0) return@withContext TrashDeleteResult(0, 0L, false)
         val limit = System.currentTimeMillis() - days * 86_400_000L
         var done = 0
         var freed = 0L
         for (t in readTrash()) {
-            if (t.time > limit) continue
+            if (t.time <= 0 || t.time > limit) continue
             if (FsUtil.deleteRecursive(t.content)) {
                 t.metaFile.delete()
                 done++

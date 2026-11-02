@@ -38,7 +38,8 @@ fun AppRoot(vm: AppViewModel) {
                     is Overlay.Cleaner -> CleanerScreen(top.c)
                     is Overlay.Trash -> TrashScreen(top.c)
                     is Overlay.ArchiveView -> ArchiveScreen(top.c)
-                    is Overlay.Image -> ImageScreen(vm, top)
+                    is Overlay.Media -> MediaScreen(vm, top)
+                    is Overlay.Tags -> TagsScreen(top.c)
                     is Overlay.Editor -> EditorScreen(top.c)
                 }
             }

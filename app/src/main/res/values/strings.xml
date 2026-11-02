@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FileDeck</string>
+    <string name="app_name">DL-File</string>
     <string name="s_ne_udalos_otkryt_nastroyki_dostupa">Не удалось открыть настройки доступа</string>
     <string name="s_ne_udalos_poluchit_spisok_nakopiteley">Не удалось получить список накопителей</string>
     <string name="s_pusto">пусто</string>
@@ -158,7 +158,7 @@
     <string name="s_poisk_po_pamyati">Поиск по памяти</string>
     <string name="s_poisk_v_etoy_papke">Поиск в этой папке</string>
     <string name="s_nuzhen_dostup_ko_vsem_faylam">Нужен доступ ко всем файлам</string>
-    <string name="s_filedeck_pokazyvaet_i_menyaet_fayly">FileDeck показывает и меняет файлы на устройстве. Android просит выдать это разрешение отдельно: включите переключатель в системных настройках и вернитесь в приложение.</string>
+    <string name="s_filedeck_pokazyvaet_i_menyaet_fayly">DL-File показывает и меняет файлы на устройстве. Android просит выдать это разрешение отдельно: включите переключатель в системных настройках и вернитесь в приложение.</string>
     <string name="s_vydat_dostup">Выдать доступ</string>
     <string name="s_zagruzki">Загрузки</string>
     <string name="s_kamera">Камера</string>
@@ -204,7 +204,7 @@
     <string name="s_sdelano_v">Сделано в</string>
     <string name="s_dostup_k_faylam">Доступ к файлам</string>
     <string name="s_bez_dostupa_prilozhenie_ne_uvidit">Без доступа приложение не увидит файлы</string>
-    <string name="s_filedeck_mozhet_chitat_i_menyat">FileDeck может читать и менять файлы на устройстве</string>
+    <string name="s_filedeck_mozhet_chitat_i_menyat">DL-File может читать и менять файлы на устройстве</string>
     <string name="s_dostup_ne_vydan">Доступ не выдан</string>
     <string name="s_dostup_vydan">Доступ выдан</string>
     <string name="s_vernut_vse_nastroyki_po_umolchaniyu">Вернуть все настройки по умолчанию</string>

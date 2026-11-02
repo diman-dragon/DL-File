@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FileDeck"
+rootProject.name = "DL-File"
 include(":app")

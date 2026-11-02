@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,9 +30,11 @@ import dev.filedeck.app.meta
 fun ArchiveScreen(c: ArchiveBrowserController) {
     val d = c.data
     Column(Modifier.fillMaxSize().background(fd.surface)) {
-        FdBar(c.entry.name, onBack = { if (!c.onBack()) c.vm.overlays.removeAll { it is Overlay.ArchiveView && it.c === c } })
+        FdBar(c.entry.name, onBack = { if (!c.onBack()) c.vm.overlays.removeAll { it is Overlay.ArchiveView && it.c === c } }) {
+            if (d != null && d.listing) SortAction(c.sort, { c.sort = it })
+        }
         if (d != null) {
-            Text(
+            FdText(
                 meta(d.format, "${d.count} ${Str.p(R.plurals.word_item, d.count)}", formatSize(d.bytes),
                     if (d.encrypted) Str.s(R.string.archive_password) else null),
                 color = fd.muted, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
@@ -77,7 +78,7 @@ fun ArchiveScreen(c: ArchiveBrowserController) {
                                 )
                             }
                         }
-                        if (d?.truncated == true) Text(Str.s(R.string.s_pokazany_pervye_20_000_zapisey), color = fd.muted,
+                        if (d?.truncated == true) FdText(Str.s(R.string.s_pokazany_pervye_20_000_zapisey), color = fd.muted,
                             fontSize = 12.sp, modifier = Modifier.padding(12.dp))
                     }
                 }

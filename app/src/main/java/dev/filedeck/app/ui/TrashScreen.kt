@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,7 +30,10 @@ fun TrashScreen(c: TrashController) {
     val n = c.selected.size
     Column(Modifier.fillMaxSize().background(fd.surface)) {
         FdBar(Str.s(R.string.s_korzina), onBack = { vm.overlays.removeAll { it is Overlay.Trash && it.c === c } }) {
-            if (c.items.isNotEmpty()) SelectAllButton(n == c.items.size) { c.toggleAll() }
+            if (c.items.isNotEmpty()) {
+                SortAction(c.sort, { c.sort = it })
+                SelectAllButton(n == c.items.size) { c.toggleAll() }
+            }
         }
         Box(Modifier.weight(1f).fillMaxWidth()) {
             when {
@@ -40,13 +42,13 @@ fun TrashScreen(c: TrashController) {
                     Str.f(R.string.trash_empty_hint, c.days, Str.p(R.plurals.word_day, c.days)))
                 else -> LazyColumn(Modifier.fillMaxSize()) {
                     item {
-                        Text(
+                        FdText(
                             meta("${c.items.size} ${Str.p(R.plurals.word_item, c.items.size)}", formatSize(c.bytes),
                                 Str.f(R.string.trash_keep, c.days, Str.p(R.plurals.word_day, c.days))),
                             color = fd.muted, fontSize = 13.sp, modifier = Modifier.padding(16.dp),
                         )
                     }
-                    items(c.items, key = { it.id }) { t ->
+                    items(c.sortedItems(), key = { it.id }) { t ->
                         val on = t.id in c.selected
                         val kind = kindOf(t.name, t.dir)
                         val left = maxOf(0L,

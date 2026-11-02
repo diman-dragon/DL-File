@@ -62,7 +62,7 @@ class SettingsStore(context: Context) {
             confirmDelete = sp.getBoolean("confirmDelete", d.confirmDelete),
             start = sp.readEnum("start", d.start),
             useTrash = sp.getBoolean("useTrash", d.useTrash),
-            trashDays = sp.getInt("trashDays", d.trashDays),
+            trashDays = sp.getInt("trashDays", d.trashDays).takeIf { it in Settings.TRASH_DAYS } ?: d.trashDays,
             cleaner = CleanerOptions(
                 primary = sp.getBoolean("c.primary", dc.primary),
                 sd = sp.getBoolean("c.sd", dc.sd),

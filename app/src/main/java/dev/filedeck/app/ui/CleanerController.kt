@@ -35,6 +35,7 @@ class CleanerController(val vm: AppViewModel) {
     var sel by mutableStateOf<CleanSelection>(emptyMap())
     var progress by mutableStateOf<ScanProgress?>(null)
     var busy by mutableStateOf(false)
+    var sort by mutableStateOf(SortSpec(dev.filedeck.app.SortBy.SIZE, true))
 
     val opts get() = vm.settings.cleaner
     val primary get() = vm.roots.firstOrNull { it.primary } ?: vm.roots.firstOrNull()
@@ -105,7 +106,7 @@ class CleanerController(val vm: AppViewModel) {
 
     fun view(path: String) {
         if (kindOf(basename(path), false) == FileKind.Image) {
-            vm.overlays.add(Overlay.Image(listOf(Fs.describe(File(path), false)), 0))
+            vm.overlays.add(Overlay.Media(listOf(Fs.describe(File(path), false)), 0))
         } else vm.openPathExternal(path)
     }
 

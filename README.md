@@ -1,4 +1,4 @@
-# FileDeck by DataLaw — нативный файловый менеджер для Android
+# DL-File by DataLaw — нативный файловый менеджер для Android
 
 Версия **0.0.8**. Kotlin + Jetpack Compose (Material 3).
 

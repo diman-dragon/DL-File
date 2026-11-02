@@ -195,6 +195,10 @@ fun AppViewModel.showProps(e: FileEntry) {
     }
 }
 
+fun AppViewModel.editTags(e: FileEntry) {
+    overlays.add(Overlay.Tags(TagsController(this, e)))
+}
+
 fun AppViewModel.fabMenu() {
     sheet(
         Str.s(R.string.s_sozdat),

@@ -21,7 +21,7 @@ class FileDeckApp : Application() {
             try {
                 val sw = StringWriter()
                 error.printStackTrace(PrintWriter(sw))
-                val text = ("FileDeck ${BuildConfig.VERSION_NAME}\n" +
+                val text = ("DL-File ${BuildConfig.VERSION_NAME}\n" +
                     "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT}), ${Build.MANUFACTURER} ${Build.MODEL}\n" +
                     "Thread: ${thread.name}\n\n$sw").take(60_000)
                 try {

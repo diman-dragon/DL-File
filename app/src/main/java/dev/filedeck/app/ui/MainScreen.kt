@@ -36,7 +36,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -106,7 +105,7 @@ private fun TopBar(vm: AppViewModel) {
                 path != null && vm.perm == true -> FdIconButton(Icons2.back, Str.s(R.string.s_naverh), { vm.up() })
                 else -> Box(Modifier.padding(start = 12.dp, end = 8.dp).size(28.dp).clip(RoundedCornerShape(8.dp)).background(fd.manila),
                     contentAlignment = Alignment.Center) {
-                    Text("D", color = fd.onManila, fontWeight = FontWeight.ExtraBold)
+                    FdText("D", color = fd.onManila, fontWeight = FontWeight.ExtraBold)
                 }
             }
             Switcher(vm, Modifier.weight(1f))
@@ -116,13 +115,14 @@ private fun TopBar(vm: AppViewModel) {
         when {
             n > 0 -> Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 FdIconButton(Icons2.close, Str.s(R.string.s_otmenit_vybor), { vm.clearSelection() })
-                Text("$n ${Str.p(R.plurals.word_selected, n)}", color = fd.text, fontWeight = FontWeight.SemiBold,
+                FdText("$n ${Str.p(R.plurals.word_selected, n)}", color = fd.text, fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.weight(1f))
                 FdIconButton(Icons2.selectAll, Str.s(R.string.s_vybrat_vse), { vm.selectAll() })
             }
             searching -> SearchField(vm)
             path != null && vm.perm == true -> Row(Modifier.fillMaxWidth().height(44.dp), verticalAlignment = Alignment.CenterVertically) {
                 Crumbs(vm, path, Modifier.weight(1f))
+                SortAction(vm.sortSpec, { vm.setSort(it) })
                 FdIconButton(
                     if (vm.settings.view == ViewMode.LIST) Icons2.grid else Icons2.list, Str.s(R.string.s_smenit_vid),
                     { vm.updateSettings { it.copy(view = if (it.view == ViewMode.LIST) ViewMode.GRID else ViewMode.LIST) } },
@@ -147,7 +147,7 @@ private fun Switcher(vm: AppViewModel, modifier: Modifier) {
                 val c = if (active) fd.onManila else if (dim) fd.muted.copy(alpha = 0.5f) else fd.text
                 Icon(icon, null, tint = c, modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(6.dp))
-                Text(label, color = c, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                FdText(label, color = c, fontSize = 14.sp, fontWeight = FontWeight.Medium)
             }
         }
         seg(Str.s(R.string.storage_short_internal), Icons2.drive, cur?.primary == true, false) { vm.switchRoot(false) }
@@ -189,7 +189,7 @@ private fun SearchField(vm: AppViewModel) {
     }
     TextField(
         value = s.q, onValueChange = { vm.runSearch(it) }, singleLine = true,
-        placeholder = { Text(if (vm.path != null) Str.s(R.string.s_poisk_v_etoy_papke) else Str.s(R.string.s_poisk_po_pamyati)) },
+        placeholder = { FdText(if (vm.path != null) Str.s(R.string.s_poisk_v_etoy_papke) else Str.s(R.string.s_poisk_po_pamyati)) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { vm.runSearch(s.q) }),
         colors = TextFieldDefaults.colors(
@@ -220,10 +220,10 @@ private fun PermissionView(vm: AppViewModel) {
             Icon(Icons2.lock, null, tint = fd.manila, modifier = Modifier.size(34.dp))
         }
         Spacer(Modifier.height(20.dp))
-        Text(Str.s(R.string.s_nuzhen_dostup_ko_vsem_faylam), color = fd.text, fontSize = 22.sp, fontWeight = FontWeight.SemiBold,
+        FdText(Str.s(R.string.s_nuzhen_dostup_ko_vsem_faylam), color = fd.text, fontSize = 22.sp, fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center)
         Spacer(Modifier.height(8.dp))
-        Text(
+        FdText(
             Str.s(R.string.s_filedeck_pokazyvaet_i_menyaet_fayly),
             color = fd.muted, fontSize = 14.sp, textAlign = TextAlign.Center,
         )
@@ -245,7 +245,7 @@ private val QUICK = listOf(
 private fun HomeView(vm: AppViewModel) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            if (vm.roots.isEmpty()) Text(Str.s(R.string.s_nakopiteli_ne_naydeny), color = fd.muted, modifier = Modifier.padding(16.dp))
+            if (vm.roots.isEmpty()) FdText(Str.s(R.string.s_nakopiteli_ne_naydeny), color = fd.muted, modifier = Modifier.padding(16.dp))
             vm.roots.forEach { StorageCard(it) { vm.go(it.path) } }
         }
         Row(Modifier.padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -278,8 +278,8 @@ private fun StorageCard(r: StorageRoot, onClick: () -> Unit) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(if (r.primary) Icons2.drive else Icons2.sd, null, tint = accent, modifier = Modifier.size(24.dp))
             Spacer(Modifier.width(10.dp))
-            Text(r.name, color = fd.text, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-            Text("${r.percent}%", color = accent, fontWeight = FontWeight.Bold)
+            FdText(r.name, color = fd.text, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+            FdText("${r.percent}%", color = accent, fontWeight = FontWeight.Bold)
         }
         Spacer(Modifier.height(12.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(3.dp), modifier = Modifier.fillMaxWidth()) {
@@ -291,7 +291,7 @@ private fun StorageCard(r: StorageRoot, onClick: () -> Unit) {
             }
         }
         Spacer(Modifier.height(10.dp))
-        Text(Str.f(R.string.s_svobodno_iz, formatSize(r.free), formatSize(r.total)), color = fd.muted, fontSize = 13.sp)
+        FdText(Str.f(R.string.s_svobodno_iz, formatSize(r.free), formatSize(r.total)), color = fd.muted, fontSize = 13.sp)
     }
 }
 
@@ -302,8 +302,8 @@ private fun ToolCard(title: String, sub: String, icon: ImageVector, main: Boolea
     Column(modifier.clip(RoundedCornerShape(20.dp)).background(bg).clickable(onClick = onClick).padding(16.dp)) {
         Icon(icon, null, tint = if (main) fd.onManila else fd.manila, modifier = Modifier.size(28.dp))
         Spacer(Modifier.height(10.dp))
-        Text(title, color = fg, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-        Text(sub, color = fg.copy(alpha = 0.7f), fontSize = 12.sp)
+        FdText(title, color = fg, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+        FdText(sub, color = fg.copy(alpha = 0.7f), fontSize = 12.sp)
     }
 }
 
@@ -345,11 +345,14 @@ private fun FileListView(vm: AppViewModel) {
 
     Column(Modifier.fillMaxSize()) {
         if (s != null) {
-            Text(
-                meta("${list.size} ${Str.p(R.plurals.word_result, list.size)}",
-                    if (s.truncated) Str.s(R.string.search_truncated) else null),
-                color = fd.muted, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            )
+            Row(Modifier.fillMaxWidth().padding(start = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                FdText(
+                    meta("${list.size} ${Str.p(R.plurals.word_result, list.size)}",
+                        if (s.truncated) Str.s(R.string.search_truncated) else null),
+                    color = fd.muted, fontSize = 13.sp, modifier = Modifier.weight(1f).padding(vertical = 8.dp),
+                )
+                SortAction(vm.sortSpec, { vm.setSort(it) })
+            }
         }
         if (grid) {
             val state = remember(key) { LazyGridState(vm.scrollMemo[key] ?: 0) }
@@ -437,15 +440,15 @@ private fun Dock(vm: AppViewModel, selecting: Boolean) {
         } else {
             val c = vm.clip ?: return
             Icon(if (c.mode == ClipMode.MOVE) Icons2.cut else Icons2.copy, null, tint = fd.muted, modifier = Modifier.padding(start = 8.dp))
-            Text(
+            FdText(
                 (if (c.mode == ClipMode.MOVE) Str.s(R.string.s_perenesti) else Str.s(R.string.s_skopirovat)) + ": ${c.paths.size}",
                 color = fd.text, modifier = Modifier.weight(1f).padding(start = 8.dp),
             )
-            TextButton(onClick = { vm.cancelPaste() }) { Text(Str.s(R.string.s_otmena), color = fd.muted) }
+            TextButton(onClick = { vm.cancelPaste() }) { FdText(Str.s(R.string.s_otmena), color = fd.muted) }
             Button(
                 onClick = { vm.paste() },
                 colors = ButtonDefaults.buttonColors(containerColor = fd.manila, contentColor = fd.onManila),
-            ) { Text(Str.s(R.string.s_vstavit_syuda)) }
+            ) { FdText(Str.s(R.string.s_vstavit_syuda)) }
         }
     }
 }

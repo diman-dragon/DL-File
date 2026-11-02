@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -91,7 +90,7 @@ private fun ColumnScope.SetupView(c: CleanerController) {
         Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons2.sparkle, null, tint = fd.manila, modifier = Modifier.size(34.dp))
             Spacer(Modifier.width(14.dp))
-            Text(Str.s(R.string.s_naydem_dublikaty_musor_pustye_papki), color = fd.muted, fontSize = 14.sp)
+            FdText(Str.s(R.string.s_naydem_dublikaty_musor_pustye_papki), color = fd.muted, fontSize = 14.sp)
         }
         SectionTitle(Str.s(R.string.s_gde_iskat))
         SourcesGroup(c)
@@ -156,7 +155,7 @@ private fun ColumnScope.ScanningView(c: CleanerController) {
             "images" -> Str.s(R.string.s_analiziruem_fotografii)
             else -> Str.s(R.string.s_rabotaem)
         }
-        Text(phase, color = fd.text, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+        FdText(phase, color = fd.text, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(16.dp))
         if (p != null && p.phase != "walk" && p.total > 0) {
             LinearProgressIndicator(progress = { (p.done.toFloat() / p.total).coerceIn(0f, 1f) }, color = fd.manila,
@@ -167,13 +166,13 @@ private fun ColumnScope.ScanningView(c: CleanerController) {
         Spacer(Modifier.height(20.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("%,d".format(p?.files ?: 0).replace(',', ' '), color = fd.text, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text(Str.s(R.string.s_faylov), color = fd.muted, fontSize = 13.sp)
+                FdText("%,d".format(p?.files ?: 0).replace(',', ' '), color = fd.text, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                FdText(Str.s(R.string.s_faylov), color = fd.muted, fontSize = 13.sp)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(formatSize(p?.bytes ?: 0).ifEmpty { Str.s(R.string.s_0_b) }, color = fd.text, fontSize = 22.sp,
+                FdText(formatSize(p?.bytes ?: 0).ifEmpty { Str.s(R.string.s_0_b) }, color = fd.text, fontSize = 22.sp,
                     fontWeight = FontWeight.Bold)
-                Text(Str.s(R.string.s_prosmotreno), color = fd.muted, fontSize = 13.sp)
+                FdText(Str.s(R.string.s_prosmotreno), color = fd.muted, fontSize = 13.sp)
             }
         }
         val cur = p?.current
@@ -194,9 +193,9 @@ private fun ColumnScope.SummaryView(c: CleanerController) {
     val safe = CleanerLogic.safeBytes(r, c.sel)
     Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
         Column(Modifier.padding(20.dp)) {
-            Text(Str.s(R.string.s_mozhno_bezopasno_osvobodit), color = fd.muted, fontSize = 13.sp)
-            Text(formatSize(safe), color = fd.manila, fontSize = 34.sp, fontWeight = FontWeight.Bold)
-            Text(
+            FdText(Str.s(R.string.s_mozhno_bezopasno_osvobodit), color = fd.muted, fontSize = 13.sp)
+            FdText(formatSize(safe), color = fd.manila, fontSize = 34.sp, fontWeight = FontWeight.Bold)
+            FdText(
                 Str.f(
                     R.string.cleaner_scanned,
                     "%,d".format(r.stats.files),
@@ -236,7 +235,7 @@ private fun UsageBar(r: ScanResult) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 2.dp)) {
                 Box(Modifier.size(10.dp).clip(RoundedCornerShape(5.dp)).background(usageColor(k)))
                 Spacer(Modifier.width(8.dp))
-                Text("$l  ${formatSize(bytes)}", color = fd.muted, fontSize = 13.sp)
+                FdText("$l  ${formatSize(bytes)}", color = fd.muted, fontSize = 13.sp)
             }
         }
     }
@@ -246,7 +245,7 @@ private fun UsageBar(r: ScanResult) {
 private fun FoundGroup(c: CleanerController, r: ScanResult) {
     val enabled = CleanCat.entries.filter { c.opts.isEnabled(it) }
     if (enabled.isEmpty()) {
-        Text(Str.s(R.string.s_vklyuchite_hotya_by_odnu_kategoriyu), color = fd.muted, modifier = Modifier.padding(20.dp))
+        FdText(Str.s(R.string.s_vklyuchite_hotya_by_odnu_kategoriyu), color = fd.muted, modifier = Modifier.padding(20.dp))
     }
     Group {
         enabled.forEachIndexed { i, cat ->
@@ -262,8 +261,8 @@ private fun FoundGroup(c: CleanerController, r: ScanResult) {
                 Icon(if (n > 0) catIcon(cat) else Icons2.check, null, tint = if (n > 0) fd.manila else fd.muted)
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(cat.title, color = fd.text, fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                    Text(sub, color = fd.muted, fontSize = 13.sp)
+                    FdText(cat.title, color = fd.text, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    FdText(sub, color = fd.muted, fontSize = 13.sp)
                 }
                 if (n > 0) Icon(Icons2.chevron, null, tint = fd.muted)
             }
@@ -280,34 +279,41 @@ private fun ColumnScope.DetailView(c: CleanerController) {
     val bytes = CleanerLogic.selBytes(c.result, c.sel, cat)
     val all = rows.isNotEmpty() && n == rows.size
     FdBar(cat.title, onBack = { c.onBack() }) {
-        if (rows.isNotEmpty()) SelectAllButton(all) { c.toggleAll() }
+        if (rows.isNotEmpty()) {
+            SortAction(c.sort, { c.sort = it })
+            SelectAllButton(all) { c.toggleAll() }
+        }
     }
     if (rows.isEmpty()) {
         Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
             StateView(Icons2.check, Str.s(R.string.s_vse_chisto), Str.s(R.string.s_v_etoy_kategorii_bolshe_nichego))
         }
     } else {
-        val groups = if (cat.group) CleanerLogic.groupRows(rows) else emptyMap()
+        val groups = if (cat.group) {
+            val cmp = sortComparator<CleanRow>(c.sort, { basename(it.path) }, { it.size }, { it.mtime })
+            CleanerLogic.groupRows(rows).values.sortedWith { a, b -> cmp.compare(CleanerLogic.keeper(a), CleanerLogic.keeper(b)) }
+        } else emptyList()
         LazyColumn(Modifier.weight(1f)) {
-            item { Text(cat.hint, color = fd.muted, fontSize = 13.sp, modifier = Modifier.padding(16.dp)) }
+            item { FdText(cat.hint, color = fd.muted, fontSize = 13.sp, modifier = Modifier.padding(16.dp)) }
             if (cat.group) {
-                groups.values.forEach { list ->
+                groups.forEach { list ->
                     val keep = CleanerLogic.keeper(list)
                     val waste = list.filter { it !== keep }.sumOf { it.size }
                     item {
                         val kindLabel = Str.s(if (cat == CleanCat.Similar) R.string.group_similar else R.string.group_same)
                         Row(Modifier.fillMaxWidth().background(fd.surface2).padding(horizontal = 16.dp, vertical = 8.dp)) {
-                            Text(
+                            FdText(
                                 meta(kindLabel, list.size.toString()),
                                 color = fd.text, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f),
                             )
-                            Text(Str.f(R.string.s_mozhno_osvobodit, formatSize(waste)), color = fd.muted, fontSize = 13.sp)
+                            FdText(Str.f(R.string.s_mozhno_osvobodit, formatSize(waste)), color = fd.muted, fontSize = 13.sp)
                         }
                     }
                     items(list, key = { it.path + "#" + it.group }) { r -> CleanRowView(c, r, r.path in selSet, keep.path) }
                 }
             } else {
-                items(rows, key = { it.path }) { r -> CleanRowView(c, r, r.path in selSet, null) }
+                val sorted = sortWith(rows, c.sort, { it.dir }, { basename(it.path) }, { it.size }, { it.mtime })
+                items(sorted, key = { it.path }) { r -> CleanRowView(c, r, r.path in selSet, null) }
             }
         }
     }
@@ -347,7 +353,7 @@ private fun CleanRowView(c: CleanerController, r: CleanRow, on: Boolean, keepPat
             }
         },
         titleExtra = if (keepPath == r.path) {
-            { Text(Str.s(R.string.s_ostavit), color = fd.manila, fontSize = 12.sp, modifier = Modifier.padding(start = 8.dp)) }
+            { FdText(Str.s(R.string.s_ostavit), color = fd.manila, fontSize = 12.sp, modifier = Modifier.padding(start = 8.dp)) }
         } else null,
         end = {
             if (!r.dir) FdIconButton(Icons2.eye, Str.s(R.string.s_otkryt), { c.view(r.path) })

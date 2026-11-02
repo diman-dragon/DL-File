@@ -16,7 +16,11 @@ class TrashController(val vm: AppViewModel) {
     var bytes by mutableStateOf(0L)
     var loading by mutableStateOf(true)
     var selected by mutableStateOf<Set<String>>(emptySet())
+    var sort by mutableStateOf(SortSpec(dev.filedeck.app.SortBy.DATE, true))
     private var busy = false
+
+    fun sortedItems(): List<TrashItem> =
+        sortWith(items, sort, { false }, { it.name }, { it.size }, { it.time })
 
     val days: Int get() = vm.settings.trashDays
 

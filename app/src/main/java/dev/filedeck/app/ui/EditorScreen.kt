@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ fun EditorScreen(c: EditorController) {
     Column(Modifier.fillMaxSize().background(fd.surface).imePadding()) {
         FdBar(c.entry.name + if (c.dirty) " •" else "", onBack = { c.vm.onBack() }) {
             TextButton(onClick = { c.save() }, enabled = c.dirty) {
-                Text(Str.s(R.string.s_sohranit), color = if (c.dirty) fd.manila else fd.muted, fontWeight = FontWeight.SemiBold)
+                FdText(Str.s(R.string.s_sohranit), color = if (c.dirty) fd.manila else fd.muted, fontWeight = FontWeight.SemiBold)
             }
         }
         if (!c.loaded) {

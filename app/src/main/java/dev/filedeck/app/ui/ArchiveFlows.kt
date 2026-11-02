@@ -130,6 +130,7 @@ fun AppViewModel.moreForSelection() {
     }
     if (one != null && !one.dir) items.add(SheetItem(Icons2.external, Str.s(R.string.s_otkryt_v_prilozhenii)) { openExternal(one) })
     if (one != null && one.isEditable()) items.add(SheetItem(Icons2.file, Str.s(R.string.s_otkryt_v_redaktore)) { openEditor(one) })
+    if (one != null) items.add(SheetItem(Icons2.tag, Str.s(R.string.tags_menu), Str.s(R.string.tags_menu_hint)) { editTags(one) })
     if (one != null) items.add(SheetItem(Icons2.info, Str.s(R.string.s_svoystva)) { showProps(one) })
     if (settings.useTrash) {
         items.add(SheetItem(divider = true))

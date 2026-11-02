@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tags_menu">Изменить теги</string>
+    <string name="tags_menu_hint">Название, даты, камера, координаты</string>
+    <string name="tags_title">Теги файла</string>
+    <string name="tags_name">Название файла</string>
+    <string name="tags_mtime">Дата изменения файла</string>
+    <string name="tags_date">Дата съёмки</string>
+    <string name="tags_date_hint">ГГГГ-ММ-ДД чч:мм:сс</string>
+    <string name="tags_gps">Координаты (широта, долгота)</string>
+    <string name="tags_orientation">Ориентация (1–8)</string>
+    <string name="tags_sync_mtime">Дата изменения = дате съёмки</string>
+    <string name="tags_save">Сохранить</string>
+    <string name="tags_saved">Теги сохранены</string>
+    <string name="tags_bad_date">Дата: ГГГГ-ММ-ДД чч:мм:сс</string>
+    <string name="tags_bad_mtime">Дата изменения: ГГГГ-ММ-ДД чч:мм:сс</string>
+    <string name="tags_bad_gps">Координаты: 55.751244, 37.618423</string>
+    <string name="tags_no_exif">Теги внутри файла поддерживаются у фото (JPG, PNG, WebP, DNG). У остальных файлов меняются название и дата изменения.</string>
+    <string name="tags_read_failed">Не удалось прочитать теги</string>
+    <string name="tags_section_photo">Фото</string>
+    <string name="tag_make">Камера (производитель)</string>
+    <string name="tag_model">Модель камеры</string>
+    <string name="tag_lens">Объектив</string>
+    <string name="tag_software">Программа</string>
+    <string name="tag_artist">Автор</string>
+    <string name="tag_copyright">Авторские права</string>
+    <string name="tag_description">Описание</string>
+    <string name="tag_comment">Комментарий</string>
+    <string name="tag_fnumber">Диафрагма (f)</string>
+    <string name="tag_exposure">Выдержка (с)</string>
+    <string name="tag_iso">ISO</string>
+    <string name="tag_focal">Фокусное расстояние (мм)</string>
+    <string name="media_play">Воспроизвести</string>
+    <string name="media_pause">Пауза</string>
+</resources>

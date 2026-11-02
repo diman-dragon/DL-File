@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -49,7 +48,7 @@ fun SettingsScreen(vm: AppViewModel) {
             titles.forEachIndexed { i, t ->
                 Tab(
                     selected = pager.currentPage == i, onClick = { scope.launch { pager.animateScrollToPage(i) } },
-                    text = { Text(t, color = if (pager.currentPage == i) fd.manila else fd.muted) },
+                    text = { FdText(t, color = if (pager.currentPage == i) fd.manila else fd.muted) },
                 )
             }
         }
@@ -129,22 +128,22 @@ private fun AboutPage(vm: AppViewModel) {
     Column(Modifier.padding(12.dp).fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(fd.surface2).padding(20.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(56.dp).clip(RoundedCornerShape(16.dp)).background(fd.manila), contentAlignment = Alignment.Center) {
-                Text("D", color = fd.onManila, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                FdText("D", color = fd.onManila, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
             }
             Spacer(Modifier.width(14.dp))
             Column {
-                Text("FileDeck", color = fd.text, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text(Str.s(R.string.s_faylovyy_menedzher_bez_lishnego), color = fd.muted, fontSize = 13.sp)
+                FdText("DL-File", color = fd.text, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                FdText(Str.s(R.string.s_faylovyy_menedzher_bez_lishnego), color = fd.muted, fontSize = 13.sp)
             }
         }
         Spacer(Modifier.height(14.dp))
-        Text(Str.f(R.string.s_versiya_sborka, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE), color = fd.text, fontSize = 14.sp)
+        FdText(Str.f(R.string.s_versiya_sborka, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE), color = fd.text, fontSize = 14.sp)
         Spacer(Modifier.height(10.dp))
         listOf(Str.s(R.string.s_sdelano_v) to "DataLaw", Str.s(R.string.s_platforma) to "Android",
             Str.s(R.string.s_osnova) to "Kotlin · Jetpack Compose").forEach { (k, v) ->
             Row(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
-                Text(k, color = fd.muted, modifier = Modifier.weight(1f))
-                Text(v, color = fd.text, fontWeight = FontWeight.Medium)
+                FdText(k, color = fd.muted, modifier = Modifier.weight(1f))
+                FdText(v, color = fd.text, fontWeight = FontWeight.Medium)
             }
         }
     }

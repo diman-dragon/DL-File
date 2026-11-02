@@ -11,7 +11,6 @@ import dev.filedeck.app.Outcome
 import dev.filedeck.app.R
 import dev.filedeck.app.Str
 import dev.filedeck.app.archiveBase
-import dev.filedeck.app.compareNames
 import dev.filedeck.app.explainArchiveError
 import dev.filedeck.app.parentOf
 import kotlinx.coroutines.launch
@@ -75,6 +74,7 @@ class ArchiveBrowserController(val vm: AppViewModel, val entry: FileEntry) {
     var cwd by mutableStateOf("")
     var loading by mutableStateOf(true)
     var selected by mutableStateOf<Set<String>>(emptySet())
+    var sort by mutableStateOf(SortSpec())
     private var password = ""
 
     init {
@@ -136,7 +136,7 @@ class ArchiveBrowserController(val vm: AppViewModel, val entry: FileEntry) {
         var n: ArcNode? = root
         for (part in cwd.split("/").filter { it.isNotEmpty() }) n = n?.children?.get(part)
         val kids = n?.children?.values?.toList() ?: emptyList()
-        return kids.sortedWith { a, b -> if (a.dir != b.dir) (if (a.dir) -1 else 1) else compareNames(a.name, b.name) }
+        return sortWith(kids, sort, { it.dir }, { it.name }, { it.size }, { it.mtime })
     }
 
     fun toggle(path: String) {

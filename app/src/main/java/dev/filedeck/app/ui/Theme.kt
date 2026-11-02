@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
