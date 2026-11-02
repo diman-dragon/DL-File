@@ -1,6 +1,6 @@
 package dev.filedeck.app.ui
 
-import android.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf

@@ -1,6 +1,6 @@
 package dev.filedeck.app
 
-import android.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
