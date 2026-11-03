@@ -10,6 +10,7 @@
     <string name="tags_gps">Координаты (широта, долгота)</string>
     <string name="tags_orientation">Ориентация (1–8)</string>
     <string name="tags_sync_mtime">Дата изменения = дате съёмки</string>
+    <string name="tags_bad_orientation">Ориентация должна быть числом от 1 до 8 (или пустой)</string>
     <string name="tags_save">Сохранить</string>
     <string name="tags_saved">Теги сохранены</string>
     <string name="tags_bad_date">Дата: ГГГГ-ММ-ДД чч:мм:сс</string>

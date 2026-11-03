@@ -89,7 +89,7 @@ object ExifTags {
             exifToUser(ex.getAttribute(TAG_DATE)),
             values,
             gps,
-            ex.getAttribute(ExifInterface.TAG_ORIENTATION) ?: "",
+            ex.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0).let { if (it in 1..8) it.toString() else "" },
         )
     }
 

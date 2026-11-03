@@ -34,6 +34,7 @@ class TagsController(val vm: AppViewModel, val entry: FileEntry) {
     private val originalMtime = ExifTags.formatUser(entry.mtime)
     private var originalDate = ""
     private var originalGps = ""
+    private var originalOrientation = ""
 
     init {
         if (hasExif) {
@@ -45,6 +46,7 @@ class TagsController(val vm: AppViewModel, val entry: FileEntry) {
                     gps = d.gps
                     originalGps = d.gps
                     orientation = d.orientation
+                    originalOrientation = d.orientation
                     values.putAll(d.values)
                 } catch (e: Exception) {
                     vm.toast(e.message ?: Str.s(R.string.tags_read_failed), true)
@@ -79,8 +81,10 @@ class TagsController(val vm: AppViewModel, val entry: FileEntry) {
                 return
             }
         }
-        if (hasExif && orientation.isNotBlank() && orientation.trim() !in listOf("1", "2", "3", "4", "5", "6", "7", "8")) {
-            vm.toast(Str.s(R.string.tags_orientation), true)
+        if (hasExif && orientation.isNotBlank() && orientation.trim() != originalOrientation &&
+            orientation.trim() !in listOf("1", "2", "3", "4", "5", "6", "7", "8")) {
+            error = Str.s(R.string.tags_bad_orientation)
+            vm.toast(error, true)
             return
         }
         val clearGps = hasExif && gps.isBlank() && originalGps.isNotBlank()
