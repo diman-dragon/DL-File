@@ -21,6 +21,7 @@ class TagsController(val vm: AppViewModel, val entry: FileEntry) {
     var hasExif by mutableStateOf(!entry.dir && ExifTags.supports(entry.name))
     var loaded by mutableStateOf(!hasExif)
     var busy by mutableStateOf(false)
+    var error by mutableStateOf("")
 
     var name by mutableStateOf(entry.name)
     var mtime by mutableStateOf(ExifTags.formatUser(entry.mtime))
@@ -60,6 +61,7 @@ class TagsController(val vm: AppViewModel, val entry: FileEntry) {
 
     fun save() {
         if (busy) return
+        error = ""
         var dateMs: Long? = null
         if (hasExif && date.isNotBlank()) {
             dateMs = ExifTags.parseUser(date)
@@ -110,10 +112,15 @@ class TagsController(val vm: AppViewModel, val entry: FileEntry) {
                 vm.toast(Str.s(R.string.tags_saved))
                 vm.onFileChanged(entry.path, newPath)
                 close()
-            } catch (e: Exception) {
-                vm.toast(e.message ?: Str.s(R.string.tags_read_failed), true)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Throwable) {
+                android.util.Log.e("DL-File", "tags save failed", e)
+                error = e.message?.takeIf { it.isNotBlank() } ?: e.javaClass.simpleName
+                vm.toast(error, true)
+            } finally {
+                busy = false
             }
-            busy = false
         }
     }
 

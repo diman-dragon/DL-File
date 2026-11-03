@@ -1,5 +1,6 @@
 package dev.filedeck.app
 
+import android.os.ParcelFileDescriptor
 import androidx.exifinterface.media.ExifInterface
 import java.io.File
 import java.io.IOException
@@ -110,7 +111,16 @@ object ExifTags {
         clearGps: Boolean, orientation: String) {
         val file = File(path)
         val before = file.lastModified()
-        val ex = ExifInterface(path)
+        // Запись через файловый дескриптор: путь-вариант пишет во временный файл и переименовывает его,
+        // что на внешнем накопителе может молча не получиться.
+        ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_WRITE).use { pfd ->
+            applyTags(ExifInterface(pfd.fileDescriptor), values, dateMs, clearDate, gps, clearGps, orientation)
+        }
+        if (before > 0) file.setLastModified(before)
+    }
+
+    private fun applyTags(ex: ExifInterface, values: Map<String, String>, dateMs: Long?, clearDate: Boolean,
+        gps: Pair<Double, Double>?, clearGps: Boolean, orientation: String) {
         for ((t, v) in values) ex.setAttribute(t, v.trim().ifEmpty { null })
         if (dateMs != null) {
             val s = userToExif(dateMs)
@@ -133,6 +143,5 @@ object ExifTags {
         }
         if (orientation.isNotBlank()) ex.setAttribute(ExifInterface.TAG_ORIENTATION, orientation.trim())
         ex.saveAttributes()
-        if (before > 0) file.setLastModified(before)
     }
 }

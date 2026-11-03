@@ -13,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.filedeck.app.ExifTags
 import dev.filedeck.app.R
 import dev.filedeck.app.Str
@@ -53,7 +54,12 @@ fun TagsScreen(c: TagsController) {
                     TagField(Str.s(R.string.tags_orientation), c.orientation) { c.orientation = it }
                 }
             }
-            BottomAction { PrimaryButton(Str.s(R.string.tags_save), { c.save() }, Modifier.fillMaxWidth(), enabled = !c.busy) }
+            BottomAction {
+                if (c.error.isNotEmpty()) {
+                    FdText(c.error, color = fd.danger, fontSize = 13.sp, modifier = Modifier.padding(bottom = 8.dp))
+                }
+                PrimaryButton(Str.s(R.string.tags_save), { c.save() }, Modifier.fillMaxWidth(), enabled = !c.busy)
+            }
         }
     }
 }
